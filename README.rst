@@ -71,5 +71,5 @@ You can use **start_race** fixture in your tests as follows:
 
 **start_race** accepts the following arguments:
 
-* **start_race** - number of threads to run simultaneously.
-* **start_race** - actual test callable to run in threads.
+* **threads_num** - number of threads to run simultaneously.
+* **target** - actual test callable to run in threads.
