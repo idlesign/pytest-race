@@ -24,7 +24,7 @@ Requirements
 ------------
 
 * Python 2.7+, 3.3+
-* pytest
+* pytest 2.9.0+
 
 
 Usage
