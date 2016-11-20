@@ -17,7 +17,7 @@ https://github.com/idlesign/pytest-race
 .. image:: https://img.shields.io/travis/idlesign/pytest-race/master.svg
     :target: https://travis-ci.org/idlesign/pytest-race
 
-.. image:: https://landscape.io/github/idlesignpytest-race/master/landscape.svg?style=flat
+.. image:: https://landscape.io/github/idlesign/pytest-race/master/landscape.svg?style=flat
    :target: https://landscape.io/github/idlesign/pytest-race/master
 
 
