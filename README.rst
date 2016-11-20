@@ -17,10 +17,22 @@ Description
 
 *Race conditions tester for pytest*
 
+Introduces `start_race` fixture to run race conditions tests.
+
+
+Requirements
+------------
+
+* Python 2.7+, 3.3+
+* pytest
+
+
+Usage
+-----
 
 You can use `start_race` fixture in your tests as follows:
 
-.. code-block::python
+.. code-block:: python
 
     from time import sleep
 
@@ -53,9 +65,3 @@ You can use `start_race` fixture in your tests as follows:
 * `threads_num` - number of threads to run simultaneously.
 * `target` - actual test callable to run in threads.
 
-
-Requirements
-------------
-
-* Python 2.7+, 3.3+
-* pytest
