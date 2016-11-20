@@ -1,0 +1,9 @@
+*.pyc
+.project
+.pydevproject
+.idea
+.tox
+.egg-info
+.cache
+.eggs
+docs/build
