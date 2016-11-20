@@ -26,7 +26,7 @@ Description
 
 *Race conditions tester for pytest*
 
-Introduces **start_race** fixture to run race conditions tests.
+Introduces **start_race** fixture to run race condition tests.
 
 
 Requirements
