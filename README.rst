@@ -11,6 +11,15 @@ https://github.com/idlesign/pytest-race
 .. image:: https://img.shields.io/pypi/l/pytest-race.svg
     :target: https://pypi.python.org/pypi/pytest-race
 
+.. image:: https://img.shields.io/coveralls/idlesign/pytest-race/master.svg
+    :target: https://coveralls.io/r/idlesign/pytest-race
+
+.. image:: https://img.shields.io/travis/idlesign/pytest-race/master.svg
+    :target: https://travis-ci.org/idlesign/pytest-race
+
+.. image:: https://landscape.io/github/idlesignpytest-race/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/idlesign/pytest-race/master
+
 
 Description
 -----------
