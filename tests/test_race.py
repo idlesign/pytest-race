@@ -29,3 +29,4 @@ def test_race_fixture(testdir):
     result = testdir.runpytest('-v')
 
     assert result.ret == 1  # 1 - failure
+    assert 'AssertionError' in result.stdout.str()
