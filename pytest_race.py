@@ -8,10 +8,9 @@ from time import sleep
 import pytest
 
 
-PY3 = sys.version_info[0] > 3
+PY3 = sys.version_info[0] >= 3
 
 logger = logging.getLogger(__name__)
-raise_from = 'raise exc_info[1]' if PY3 else 'raise exc_info[0], exc_info[1], exc_info[2]'
 
 
 class RaceThread(Thread):
@@ -99,7 +98,10 @@ def start_race():
 
                     # Now it's time for juggling to support `raise from`
                     # both in Python 2 and 3.
-                    exec(raise_from, globals, locals)
+                    if PY3:
+                        raise exc_info[1]
+                    else:
+                        exec('raise exc_info[0], exc_info[1], exc_info[2]', globals(), locals())
             else:
                 events_avaiable.appendleft(event_done)
 
