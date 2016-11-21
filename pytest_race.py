@@ -15,19 +15,23 @@ logger = logging.getLogger(__name__)
 
 class RaceThread(Thread):
 
-    def __init__(self, idx, target, events):
+    def __init__(self, idx, target, events, args):
         """
         :param int idx:
         :param callable target:
         :param tuple events: (event_start, event_fail, event_done)
         """
         super(RaceThread, self).__init__()
+
         event_start, event_fail, event_done = events
-        self.setName('RaceThread %s' % idx)
+
         self.event_start = event_start
         self.event_fail = event_fail
         self.event_done = event_done
         self.target = target
+        self.args = args
+
+        self.setName('RaceThread %s' % idx)
 
     def run(self):
         thread_name = self.getName()
@@ -45,7 +49,7 @@ class RaceThread(Thread):
                 logger.debug('%s running ...', thread_name)
 
                 try:
-                    self.target()
+                    self.target(**self.args)
                     logger.debug('%s run succeed.', thread_name)
 
                 except Exception:
@@ -63,10 +67,11 @@ class RaceThread(Thread):
 def start_race():
     """Starts a given callable in a given number of threads."""
 
-    def actual_starter(threads_num, target):
+    def actual_starter(threads_num, target, thread_args=None):
         """
         :param int threads_num:
         :param callable target:
+        :param dict thread_args:
 
         """
         event_start = Event()
@@ -75,10 +80,22 @@ def start_race():
 
         logger.debug('Preparing clashing threads ...')
 
+        thread_args_ = thread_args or {}
+        thread_args = [{} for _ in range(threads_num)]
+
+        for param_name, values in thread_args_.items():
+            for idx, value in enumerate(values):
+                thread_args[idx][param_name] = value
+
         for idx in range(1, threads_num+1):
             event_done = Event()
             events_avaiable.appendleft(event_done)
-            thread = RaceThread(idx, target, events=(event_start, event_fail, event_done))
+
+            thread = RaceThread(
+                idx, target,
+                events=(event_start, event_fail, event_done),
+                args=thread_args[idx - 1])
+
             thread.start()
 
         sleep(1)  # Probably is enough for all threads to bootstrap.
