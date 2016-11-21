@@ -6,7 +6,7 @@ import sys
 from setuptools import setup
 
 
-VERSION = (0, 1, 0)
+VERSION = (0, 1, 1)
 
 
 PATH_BASE = os.path.dirname(__file__)

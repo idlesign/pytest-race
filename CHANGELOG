@@ -2,8 +2,8 @@ pytest-race changelog
 =====================
 
 
-Unreleased
-----------
+v0.1.1
+------
 * Fixed `raise from`.
 
 
