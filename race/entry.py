@@ -2,6 +2,7 @@ import sys
 import logging
 from threading import Thread, Event, Barrier
 from collections import deque
+from typing import Callable, Tuple
 
 import pytest
 
@@ -11,13 +12,22 @@ logger = logging.getLogger(__name__)
 
 class RaceThread(Thread):
 
-    def __init__(self, idx, target, events, barrier, args, timeout_interval=10):
+    def __init__(
+            self,
+            *
+            idx: int,
+            target: Callable,
+            events: Tuple[Event, Event, Event],
+            barrier: Barrier,
+            args: dict,
+            timeout_interval: int = 10):
         """
-        :param int idx:
-        :param callable target:
-        :param tuple events: (event_start, event_fail, event_done)
-        :param threading.Barrier barrier:
-        :param int timeout_interval:
+        :param idx:
+        :param target:
+        :param events: (event_start, event_fail, event_done)
+        :param barrier:
+        :param args:
+        :param timeout_interval:
         """
         super(RaceThread, self).__init__()
 
@@ -31,11 +41,11 @@ class RaceThread(Thread):
         self.args = args
         self.timeout_interval = timeout_interval
 
-        self.setName('RaceThread %s' % idx)
+        self.setName(f'RaceThread {idx}')
 
     def run(self):
         thread_name = self.getName()
-        logger.debug('%s waiting...', thread_name)
+        logger.debug(f'{thread_name} waiting...')
         self.barrier.wait()
 
         try:
@@ -43,12 +53,13 @@ class RaceThread(Thread):
             # If that does not happen within the timout interval, raise to
             # avoid a deadlock between main thread and worker threads.
             if not self.event_start.wait(self.timeout_interval):
-                raise TimeoutError('%s timouted.', thread_name)
+                raise TimeoutError(f'{thread_name} timed out.')
 
             self.target(**self.args)
-            logger.debug('%s run succeed.', thread_name)
+            logger.debug(f'{thread_name} run succeed.')
+
         except Exception:
-            logger.debug('%s run failed.', thread_name)
+            logger.debug(f'{thread_name} run failed.')
             self.event_fail.exc_info = sys.exc_info()
             self.event_fail.set()
             raise
@@ -61,12 +72,12 @@ class RaceThread(Thread):
 def start_race():
     """Starts a given callable in a given number of threads."""
 
-    def actual_starter(threads_num, target, thread_args=None, barrier_timeout=10):
+    def actual_starter(*, threads_num: int, target: Callable, thread_args: dict = None, barrier_timeout: int = 10):
         """
-        :param int threads_num:
-        :param callable target:
-        :param dict thread_args:
-        :param int barrier_timeout:
+        :param threads_num:
+        :param target:
+        :param thread_args:
+        :param barrier_timeout:
 
         """
         event_start = Event()
@@ -92,7 +103,7 @@ def start_race():
 
             thread = RaceThread(
                 idx,
-                target,
+                target=target,
                 events=(event_start, event_fail, event_done),
                 barrier=barrier,
                 args=thread_args[idx - 1],
