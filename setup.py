@@ -1,28 +1,35 @@
-#!/usr/bin/env python
-import os
 import io
+import os
+import re
 import sys
+
 from setuptools import setup, find_packages
-
-VERSION = (0, 1, 1)
-
 
 PATH_BASE = os.path.dirname(__file__)
 
 
-def get_readme():
-    # This will return README (including those with Unicode symbols).
-    with io.open(os.path.join(PATH_BASE, 'README.rst')) as f:
+def read_file(fpath):
+    """Reads a file within package directories."""
+    with io.open(os.path.join(PATH_BASE, fpath)) as f:
         return f.read()
+
+
+def get_version():
+    """Returns version number, without module import (which can lead to ImportError
+    if some dependencies are unavailable before install."""
+    contents = read_file(os.path.join('race', '__init__.py'))
+    version = re.search('VERSION = \(([^)]+)\)', contents)
+    version = version.group(1).replace(', ', '.').strip()
+    return version
 
 
 setup(
     name='pytest-race',
-    version='.'.join(map(str, VERSION)),
+    version=get_version(),
     url='https://github.com/idlesign/pytest-race',
 
     description='Race conditions tester for pytest',
-    long_description=get_readme(),
+    long_description=read_file('README.rst'),
     license='BSD 3-Clause License',
 
     author='Igor `idle sign` Starikov',
