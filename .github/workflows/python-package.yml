@@ -29,5 +29,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.github_token }}
       run: |
-        coverage run --source=pytest_race setup.py test
+        coverage run --source=race setup.py test
         coveralls --service=github
