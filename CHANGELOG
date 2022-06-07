@@ -2,8 +2,8 @@ pytest-race changelog
 =====================
 
 
-Unreleased
-----------
+v0.2.0 [2022-06-07]
+-------------------
 + Use threading.Barrier to synchronize workers and the main thread.
 
 
