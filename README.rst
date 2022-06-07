@@ -15,8 +15,6 @@ https://github.com/idlesign/pytest-race
     :target: https://coveralls.io/r/idlesign/pytest-race
 
 
-
-
 Description
 -----------
 
@@ -28,7 +26,7 @@ Introduces **start_race** fixture to run race condition tests.
 Requirements
 ------------
 
-* Python 2.7+, 3.7+
+* Python 3.7+
 * pytest 2.9.0+
 
 

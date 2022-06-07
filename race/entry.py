@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import logging
 from threading import Thread, Event, Barrier
@@ -6,8 +5,6 @@ from collections import deque
 
 import pytest
 
-
-PY3 = sys.version_info[0] >= 3
 
 logger = logging.getLogger(__name__)
 
@@ -117,13 +114,8 @@ def start_race():
                 if event_fail.is_set():
                     # Fail fast.
                     exc_info = event_fail.exc_info  # `exc_info` is used by `raise_from`
+                    raise exc_info[1]
 
-                    # Now it's time for juggling to support `raise from`
-                    # both in Python 2 and 3.
-                    if PY3:
-                        raise exc_info[1]
-                    else:
-                        exec('raise exc_info[0], exc_info[1], exc_info[2]', globals(), locals())
             else:
                 events_available.appendleft(event_done)
 
