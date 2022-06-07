@@ -3,16 +3,12 @@
 import os
 import io
 import sys
-from setuptools import setup
-
+from setuptools import setup, find_packages
 
 VERSION = (0, 1, 1)
 
 
 PATH_BASE = os.path.dirname(__file__)
-PATH_BIN = os.path.join(PATH_BASE, 'bin')
-
-PYTEST_RUNNER = ['pytest-runner'] if 'test' in sys.argv else []
 
 
 def get_readme():
@@ -33,11 +29,26 @@ setup(
     author='Igor `idle sign` Starikov',
     author_email='idlesign@yandex.ru',
 
-    install_requires=['pytest>=2.9.0'],
-    setup_requires=[] + PYTEST_RUNNER,
-    tests_require=['pytest'],
+    packages=find_packages(exclude=['tests']),
+    include_package_data=True,
+    zip_safe=False,
 
-    py_modules=['pytest_race'],
+    install_requires=[
+        'pytest>=2.9.0'
+    ],
+    setup_requires=[] + (['pytest-runner'] if 'test' in sys.argv else []) + [],
+
+    entry_points={
+        'pytest11': [
+            'race = race.entry',
+        ],
+    },
+
+    test_suite='tests',
+
+    tests_require=[
+        'pytest'
+    ],
 
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -55,9 +66,5 @@ setup(
         'Operating System :: OS Independent',
         'License :: OSI Approved :: BSD License',
     ],
-    entry_points={
-        'pytest11': [
-            'race = pytest_race',
-        ],
-    },
+
 )
