@@ -2,6 +2,11 @@ pytest-race changelog
 =====================
 
 
+Unreleased
+----------
++ Use threading.Barrier to synchronize workers and the main thread.
+
+
 v0.1.1
 ------
 * Fixed `raise from`.
