@@ -28,7 +28,7 @@ Introduces **start_race** fixture to run race condition tests.
 Requirements
 ------------
 
-* Python 2.7+, 3.3+
+* Python 2.7+, 3.7+
 * pytest 2.9.0+
 
 
