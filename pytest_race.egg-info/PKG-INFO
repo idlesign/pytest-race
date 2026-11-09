@@ -1,0 +1,104 @@
+Metadata-Version: 2.4
+Name: pytest-race
+Version: 0.2.0
+Summary: Race conditions tester for pytest
+Home-page: https://github.com/idlesign/pytest-race
+Author: Igor `idle sign` Starikov
+Author-email: idlesign@yandex.ru
+License: BSD 3-Clause License
+Classifier: Development Status :: 4 - Beta
+Classifier: Framework :: Pytest
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Testing
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: BSD License
+Requires-Python: >=3.2
+License-File: LICENSE
+License-File: AUTHORS
+Requires-Dist: pytest>=2.9.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+pytest-race
+===========
+https://github.com/idlesign/pytest-race
+
+.. image:: https://img.shields.io/pypi/v/pytest-race.svg
+    :target: https://pypi.python.org/pypi/pytest-race
+
+.. image:: https://img.shields.io/pypi/dm/pytest-race.svg
+    :target: https://pypi.python.org/pypi/pytest-race
+
+.. image:: https://img.shields.io/pypi/l/pytest-race.svg
+    :target: https://pypi.python.org/pypi/pytest-race
+
+.. image:: https://img.shields.io/coveralls/idlesign/pytest-race/master.svg
+    :target: https://coveralls.io/r/idlesign/pytest-race
+
+
+Description
+-----------
+
+*Race conditions tester for pytest*
+
+Introduces **start_race** fixture to run race condition tests.
+
+
+Requirements
+------------
+
+* Python 3.7+
+* pytest 2.9.0+
+
+
+Usage
+-----
+
+You can use **start_race** fixture in your tests as follows:
+
+.. code-block:: python
+
+    from time import sleep
+
+    ACCUMULATOR = 0  # This global var is race conditions prone.
+
+    def test_race(start_race):
+        from random import randint
+
+        def actual_test():
+            global ACCUMULATOR
+
+            increment = randint(1, 10000)
+
+            accumulator = ACCUMULATOR
+            sleep(1)  # Simulate some lag.
+            ACCUMULATOR += increment
+
+            # By that moment ACCUMULATOR should have been updated
+            # by another thread. Let's try to prove it.
+
+            # Using simple `assert` as usual for pytest.
+            assert accumulator + increment == ACCUMULATOR
+
+        # Let's run `actual_test` in 2 threads.
+        start_race(threads_num=2, target=actual_test)
+
+
+**start_race** accepts the following arguments:
+
+* **threads_num** - number of threads to run simultaneously.
+* **target** - actual test callable to run in threads.
