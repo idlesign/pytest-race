@@ -29,7 +29,7 @@ class RaceThread(Thread):
         :param args:
         :param timeout_interval:
         """
-        super(RaceThread, self).__init__()
+        super().__init__()
 
         event_start, event_fail, event_done = events
 
@@ -45,7 +45,7 @@ class RaceThread(Thread):
 
     def run(self):
         thread_name = self.getName()
-        logger.debug(f'{thread_name} waiting...')
+        logger.debug('%s waiting...', thread_name)
         self.barrier.wait()
 
         try:
@@ -56,10 +56,10 @@ class RaceThread(Thread):
                 raise TimeoutError(f'{thread_name} timed out.')
 
             self.target(**self.args)
-            logger.debug(f'{thread_name} run succeed.')
+            logger.debug('%s run succeed.', thread_name)
 
         except Exception:
-            logger.debug(f'{thread_name} run failed.')
+            logger.debug('%s run failed.', thread_name)
             self.event_fail.exc_info = sys.exc_info()
             self.event_fail.set()
             raise
@@ -72,7 +72,13 @@ class RaceThread(Thread):
 def start_race():
     """Starts a given callable in a given number of threads."""
 
-    def actual_starter(*, threads_num: int, target: Callable, thread_args: dict = None, barrier_timeout: int = 10):
+    def actual_starter(
+            *,
+            threads_num: int,
+            target: Callable,
+            thread_args: dict | None = None,
+            barrier_timeout: int = 10
+    ):
         """
         :param threads_num:
         :param target:

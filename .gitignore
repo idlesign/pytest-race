@@ -1,9 +1,11 @@
-*.pyc
 .project
 .pydevproject
 .idea
 .tox
-.egg-info
-.cache
-.eggs
-docs/build
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+*.lock
+site/

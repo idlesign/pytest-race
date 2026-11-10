@@ -1,31 +1,25 @@
-pytest-race installation
-========================
+# pytest-race installation
 
+Python `pip` package is required to install `pytest-race`.
 
-Python ``pip`` package is required to install ``pytest-race``.
+## From sources
 
+Use the following command line to install `pytest-race` from sources directory (containing `pyproject.toml`):
 
-From sources
-------------
+```shell
+pip install .
+```
 
-Use the following command line to install ``pytest-race`` from sources directory (containing setup.py):
+## From PyPI
 
-    pip install .
+Alternatively you can install `pytest-race` from PyPI:
 
-or
-
-    python setup.py install
-
-
-From PyPI
----------
-
-Alternatively you can install ``pytest-race`` from PyPI:
-
-    pip install pytest-race
-
+```shell
+pip install pytest-race
+```
 
 Use `-U` flag for upgrade:
 
-    pip install -U pytest-race
-
+```shell
+pip install -U pytest-race
+```

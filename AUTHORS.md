@@ -1,10 +1,7 @@
-pytest-race authors
-===================
+# pytest-race authors
 
 Created by Igor `idle sign` Starikov.
 
+## Contributors
 
-Contributors
-------------
-
-Specktrum <https://github.com/speckulatius>
+* Specktrum <https://github.com/speckulatius>
